@@ -3,13 +3,17 @@
 treble_ch = [
   (chord :c4, :major),
   (chord :d4, :major),
-  (chord :e4, :major)
+  (chord :e4, :major),
+  (chord :f4, :major),
+  (chord :g4, :major),
 ]
 
 bass_ch = [
   (chord :c2, :major),
   (chord :d2, :major),
-  (chord :e2, :major)
+  (chord :e2, :major),
+  (chord :f2, :major),
+  (chord :g2, :major),
 ]
 
 
@@ -186,6 +190,15 @@ define :main_warped_chords_8 do
 end
 
 
+define :bridge_chords_8 do |ch1, ch2|
+  play treble_ch[ch1], attack: 0.5, release: 4.0, amp: 1.1
+  sleep 4
+
+  play treble_ch[ch2], attack: 0.5, release: 4.0, amp: 1.1
+  sleep 4
+end
+
+
 define :second_chords_8 do
   4.times do
     play treble_ch[2]
@@ -256,6 +269,66 @@ define :speedy_drums_4 do
   sample :drum_cymbal_closed, amp: 0.6
   sleep 0.25 / 2.0
 end
+
+
+define :bridge_drums_8 do
+  3.times do
+    sample :bd_fat, amp: 0.6
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.6
+    sleep 0.25
+    sample :drum_snare_hard, amp: 0.3
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.6
+    sleep 0.25
+  end
+
+  sample :bd_fat, amp: 0.6
+  sleep 0.25
+  sample :drum_snare_hard, amp: 0.3
+  sleep 0.25
+  sample :drum_snare_hard, amp: 0.3
+  sleep 0.25
+  sample :drum_cymbal_closed, amp: 0.6
+  sleep 0.25 / 2.0
+  sample :drum_cymbal_closed, amp: 0.6
+  sleep 0.25 / 2.0
+
+  3.times do
+    sample :bd_fat, amp: 0.6
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.6
+    sleep 0.25
+    sample :drum_snare_hard, amp: 0.3
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.6
+    sleep 0.25
+  end
+
+  sample :bd_fat, amp: 0.8
+  sleep 0.25
+  sample :drum_snare_hard, amp: 0.3
+  sleep 0.25
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.25
+  sample :drum_cymbal_closed, amp: 0.6
+  sleep 0.25 / 2.0
+  sample :drum_cymbal_closed, amp: 0.6
+  sleep 0.25 / 2.0
+end
+
+
+define :bridge2_drums_8 do
+  8.times do
+    sample :drum_snare_hard, amp: 0.3
+    sleep 0.5
+    sample :drum_cymbal_closed, amp: 0.6
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.6
+    sleep 0.25
+  end
+end
+
 
 
 define :main_bass_8 do
@@ -369,6 +442,50 @@ define :second_bass_4 do
 end
 
 
+define :bridge_bass_8 do |ch1, ch2, trill_at_end = false|
+  use_synth :dsaw
+  opts = { amp: 0.3, release: 0.25 }
+  ch = bass_ch[ch1]
+
+  3.times do
+    play ch[0], opts
+    sleep 0.5
+    play ch[0], opts
+    sleep 0.5
+  end
+
+  play ch[0], opts
+  sleep 0.50
+  play ch[1], opts
+  sleep 0.25
+  play ch[2], opts
+  sleep 0.25
+
+  ch = bass_ch[ch2]
+
+  3.times do
+    play ch[2], opts
+    sleep 0.5
+    play ch[2], opts
+    sleep 0.5
+  end
+
+  if trill_at_end
+    play ch[2], opts
+    sleep 0.25
+    play ch[2], opts
+    sleep 0.25
+  else
+    play ch[2], opts
+    sleep 0.5
+  end
+  play ch[1], opts
+  sleep 0.25
+  play ch[0], opts
+  sleep 0.25
+end
+
+
 # Change this to start at a later track
 start_at = 0
 
@@ -387,6 +504,10 @@ threads = {
     :second_melody_p2_4,
     :fancy_melody_8,
     :fancy_melody_8,
+    -> { sleep 8 },
+    -> { sleep 8 },
+    -> { sleep 8 },
+    -> { sleep 8 },
   ],
   chords: [
     :main_chords_8,
@@ -395,6 +516,10 @@ threads = {
     :second_chords_p2_4,
     :main_warped_chords_8,
     :main_warped_chords_8,
+    -> { bridge_chords_8(0, 1) },
+    -> { bridge_chords_8(0, 1) },
+    -> { bridge_chords_8(2, 3) },
+    -> { bridge_chords_8(2, 4) },
   ],
   drums: [
     -> { sleep 8 },
@@ -403,6 +528,10 @@ threads = {
     :speedy_drums_4,
     :speedy_drums_8,
     :speedy_drums_8,
+    :bridge_drums_8,
+    :bridge2_drums_8,
+    :bridge_drums_8,
+    :bridge_drums_8,
   ],
   bass: [
     -> { sleep 8 },
@@ -411,9 +540,25 @@ threads = {
     :second_bass_4,
     :main_bass_8,
     :alt_main_bass_8,
+    -> { bridge_bass_8(0, 1) },
+    -> { bridge_bass_8(0, 1) },
+    -> { bridge_bass_8(2, 3) },
+    -> { bridge_bass_8(2, 4, true) },
   ]
 }
 
+
+#
+# Sanity check: make sure all threads have the same number of actions
+#
+action_count = 0
+threads.each do |name, sequence|
+  if action_count == 0
+    action_count = sequence.size
+    next
+  end
+  raise "#{name} has #{sequence.size} actions but should have #{action_count}" if sequence.size != action_count
+end
 
 #
 # Play all of the threads, starting at 'start_at'
