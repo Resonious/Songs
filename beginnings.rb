@@ -75,11 +75,9 @@ define :fancy_melody_8 do
   sleep 1
 
   play ch[0], opts
-  sleep 0.6
-  play ch[0] + 2, opts
-  sleep 0.2
+  sleep 0.75
   play ch[0], opts
-  sleep 0.2
+  sleep 0.25
 
   play ch[1], opts
   sleep 0.5
@@ -321,9 +319,9 @@ define :bridge_drums_8 do
 
   sample :bd_fat, amp: 0.8
   sleep 0.25
-  sample :drum_snare_hard, amp: 0.3
-  sleep 0.25
   sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.25
+  sample :drum_snare_hard, amp: 0.3
   sleep 0.25
   sample :drum_cymbal_closed, amp: 0.6
   sleep 0.25 / 2.0
