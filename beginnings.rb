@@ -16,8 +16,13 @@ bass_ch = [
   (chord :g2, :major),
 ]
 
+melody_synth = :fm
+melody_opts = { amp: 0.35 }
+
 
 define :main_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
   # Chord pattern:
   #
   # 0 * 3
@@ -26,96 +31,102 @@ define :main_melody_8 do
 
   ch = treble_ch[0]
 
-  play ch[0]
+  play ch[0], opts
   sleep 1
 
-  play ch[0]
+  play ch[0], opts
   sleep 1
 
-  play ch[1]
+  play ch[1], opts
   sleep 0.5
-  play ch[2]
+  play ch[2], opts
   sleep 0.5
 
   ch = treble_ch[1]
 
-  play ch[2]
+  play ch[2], opts
   sleep 1
 
-  play ch[0]
+  play ch[0], opts
   sleep 1
 
-  play ch[1]
+  play ch[1], opts
   sleep 1
 
-  play ch[0]
+  play ch[0], opts
   sleep 0.5
-  play ch[1]
+  play ch[1], opts
   sleep 0.5
 
   ch = treble_ch[2]
 
-  play ch[2]
+  play ch[2], opts
   sleep 1
 end
 
 
 define :fancy_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
   ch = treble_ch[0]
 
-  play ch[0]
+  play ch[0], opts
   sleep 1
 
-  play ch[0]
+  play ch[0], opts
   sleep 0.6
-  play ch[0] + 2
+  play ch[0] + 2, opts
   sleep 0.2
-  play ch[0]
+  play ch[0], opts
   sleep 0.2
 
-  play ch[1]
+  play ch[1], opts
   sleep 0.5
-  play ch[2]
+  play ch[2], opts
   sleep 0.5
 
   ch = treble_ch[1]
 
-  play ch[2]
+  play ch[2], opts
   sleep 1
 
-  play ch[0]
+  play ch[0], opts
   sleep 1
 
-  play ch[1]
+  play ch[1], opts
   sleep 1
 
-  play ch[0]
+  play ch[0], opts
   sleep 0.25
-  play ch[1]
+  play ch[1], opts
   sleep 0.75
 
   ch = treble_ch[2]
 
-  play ch[2]
+  play ch[2], opts
   sleep 1
 end
 
 
 define :second_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
   ch = treble_ch[2]
 
-  play ch[2]
+  play ch[2], opts
   sleep 1
 
-  play ch[2]
+  play ch[2], opts
   sleep 1
 
-  play ch[2]
+  play ch[2], opts
   sleep 0.5
-  play ch[1]
+  play ch[1], opts
   sleep 0.5
 
-  play ch[0]
+  play ch[0], opts
   sleep 1
 
   second_melody_p2_4
@@ -123,24 +134,27 @@ end
 
 
 define :second_melody_p2_4 do
+  use_synth melody_synth
+  opts = melody_opts
+
   ch = treble_ch[2]
 
-  play treble_ch[1][0]
+  play treble_ch[1][0], opts
   sleep 0.5
-  play ch[0]
-  sleep 0.5
-
-  play treble_ch[0][0]
-  sleep 0.5
-  play ch[0]
+  play ch[0], opts
   sleep 0.5
 
-  play ch[0]
+  play treble_ch[0][0], opts
   sleep 0.5
-  play ch[1]
+  play ch[0], opts
   sleep 0.5
 
-  play ch[2]
+  play ch[0], opts
+  sleep 0.5
+  play ch[1], opts
+  sleep 0.5
+
+  play ch[2], opts
   sleep 1
 end
 
