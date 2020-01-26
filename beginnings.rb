@@ -58,13 +58,12 @@ end
 
 define :fancy_melody_8 do
   ch = treble_ch[0]
-  anticipation = 0.1
 
   play ch[0]
-  sleep 1 - anticipation
+  sleep 1
 
   play ch[0]
-  sleep 0.6 + anticipation
+  sleep 0.6
   play ch[0] + 2
   sleep 0.2
   play ch[0]
@@ -157,6 +156,33 @@ define :main_chords_8 do
     play treble_ch[2]
     sleep 1
   end
+end
+
+
+define :main_warped_chords_8 do
+  play treble_ch[0], attack: 0.4
+  sleep 1
+
+  play treble_ch[0], attack: 0.1
+  sleep 1
+
+  play treble_ch[0], attack: 0.4
+  sleep 1
+
+  play treble_ch[1], attack: 0.1
+  sleep 1
+
+  play treble_ch[1], attack: 0.4
+  sleep 1
+
+  play treble_ch[1], attack: 0.1
+  sleep 1
+
+  play treble_ch[1], attack: 0.4
+  sleep 1
+
+  play treble_ch[2]
+  sleep 1
 end
 
 
@@ -364,11 +390,11 @@ threads = {
   ],
   chords: [
     :main_chords_8,
-    :main_chords_8,
+    :main_warped_chords_8,
     :second_chords_8,
     :second_chords_p2_4,
-    :main_chords_8,
-    :main_chords_8,
+    :main_warped_chords_8,
+    :main_warped_chords_8,
   ],
   drums: [
     -> { sleep 8 },
