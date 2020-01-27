@@ -157,6 +157,38 @@ define :second_melody_p2_4 do
 end
 
 
+define :low_melody_8 do |ch1, ch2|
+  use_synth melody_synth
+  opts = melody_opts.merge(amp: 0.1)
+
+  ch = treble_ch[ch1]
+
+  4.times do
+    play ch[0], opts
+    sleep 0.25
+    play ch[1], opts
+    sleep 0.25
+    play ch[2], opts
+    sleep 0.25
+    play ch[2]+1, opts
+    sleep 0.25
+  end
+
+  ch = treble_ch[ch2]
+
+  4.times do
+    play ch[0], opts
+    sleep 0.25
+    play ch[1], opts
+    sleep 0.25
+    play ch[2], opts
+    sleep 0.25
+    play ch[2]+1, opts
+    sleep 0.25
+  end
+end
+
+
 define :main_chords_8 do
   3.times do
     play treble_ch[0]
@@ -499,7 +531,7 @@ end
 
 
 # Change this to start at a later track
-start_at = 0
+start_at = 4
 
 
 #
@@ -516,9 +548,10 @@ threads = {
     :second_melody_p2_4,
     :fancy_melody_8,
     :fancy_melody_8,
-    -> { sleep 8 },
-    -> { sleep 8 },
-    -> { sleep 8 },
+    -> { low_melody_8(0, 1) },
+    -> { low_melody_8(0, 1) },
+    -> { low_melody_8(2, 3) },
+    -> { low_melody_8(2, 4) },
     -> { sleep 8 },
   ],
   chords: [
@@ -532,6 +565,7 @@ threads = {
     -> { bridge_chords_8(0, 1) },
     -> { bridge_chords_8(2, 3) },
     -> { bridge_chords_8(2, 4) },
+    -> { sleep 8 },
   ],
   drums: [
     -> { sleep 8 },
@@ -544,6 +578,7 @@ threads = {
     :bridge2_drums_8,
     :bridge_drums_8,
     :bridge_drums_8,
+    -> { sleep 8 },
   ],
   bass: [
     -> { sleep 8 },
@@ -556,6 +591,7 @@ threads = {
     -> { bridge_bass_8(0, 1) },
     -> { bridge_bass_8(2, 3) },
     -> { bridge_bass_8(2, 4, true) },
+    -> { sleep 8 },
   ]
 }
 
