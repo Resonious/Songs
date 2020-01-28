@@ -189,6 +189,97 @@ define :low_melody_8 do |ch1, ch2|
 end
 
 
+define :next_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[0]
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.25/2.0
+  sleep 0.25
+  ch = treble_ch[2]
+  play ch[1], opts
+  sleep 0.25
+
+  ch = treble_ch[0]
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.25/2.0
+  sleep 0.25
+  ch = treble_ch[1]
+  play ch[2], opts
+  sleep 0.25
+
+  ch = treble_ch[0]
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.25/2.0
+  sleep 0.25
+  ch = treble_ch[2]
+  play ch[2], opts
+  sleep 0.25
+
+  ch = treble_ch[0]
+  play ch[0], opts
+  sleep 0.25
+  ch = treble_ch[2]
+  play ch[0], opts
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.25/2.0
+  sleep 0.25
+  ch = treble_ch[1]
+  play ch[2], opts
+  sleep 0.25
+
+  sleep 0.75
+  ch = treble_ch[4]
+  play ch[0], opts
+  sleep 0.25
+
+  ch = treble_ch[0]
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.25/2.0
+  sleep 0.25
+  ch = treble_ch[4]
+  play ch[0]+2, opts
+  sleep 0.25
+
+  sleep 0.75
+  ch = treble_ch[4]
+  play ch[2], opts
+  sleep 0.25
+
+  ch = treble_ch[0]
+  play ch[0], opts
+  sleep 0.25
+  ch = treble_ch[3]
+  play ch[0], opts
+  sleep 0.25/2.0
+  ch = treble_ch[4]
+  play ch[2], opts
+  sleep 0.25/2.0
+  sleep 0.25
+  ch = treble_ch[4]
+  play ch[1], opts
+  sleep 0.25
+end
+
+
 define :main_chords_8 do
   3.times do
     play treble_ch[0]
@@ -531,7 +622,7 @@ end
 
 
 # Change this to start at a later track
-start_at = 4
+start_at = 10
 
 
 #
@@ -552,7 +643,7 @@ threads = {
     -> { low_melody_8(0, 1) },
     -> { low_melody_8(2, 3) },
     -> { low_melody_8(2, 4) },
-    -> { sleep 8 },
+    :next_melody_8,
   ],
   chords: [
     :main_chords_8,
