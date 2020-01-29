@@ -165,6 +165,24 @@ define :slowdown_melody_8 do
   sleep 0.5
   play ch[0], opts
   sleep 0.5
+
+  sleep 3
+
+  ch = treble_ch[0]
+
+  play ch[0], opts
+  sleep 1
+
+  play ch[1], opts
+  sleep 1
+
+  ch = treble_ch[4]
+
+  play ch[2], opts
+  sleep 1
+
+  play ch[1], opts
+  sleep 1
 end
 
 
@@ -247,171 +265,6 @@ define :low_melody_8 do |ch1, ch2|
     play ch[2]+1, opts
     sleep 0.25
   end
-end
-
-
-define :shitty_melody_8 do
-  use_synth melody_synth
-  opts = melody_opts
-
-  ch = treble_ch[0]
-  play ch[0], opts
-  sleep 0.25
-  play ch[1], opts
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.25/2.0
-  sleep 0.25
-  ch = treble_ch[2]
-  play ch[1], opts
-  sleep 0.25
-
-  ch = treble_ch[0]
-  play ch[0], opts
-  sleep 0.25
-  play ch[1], opts
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.25/2.0
-  sleep 0.25
-  ch = treble_ch[1]
-  play ch[2], opts
-  sleep 0.25
-
-  ch = treble_ch[0]
-  play ch[0], opts
-  sleep 0.25
-  play ch[1], opts
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.25/2.0
-  sleep 0.25
-  ch = treble_ch[2]
-  play ch[2], opts
-  sleep 0.25
-
-  ch = treble_ch[0]
-  play ch[0], opts
-  sleep 0.25
-  ch = treble_ch[2]
-  play ch[0], opts
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.25/2.0
-  sleep 0.25
-  ch = treble_ch[1]
-  play ch[2], opts
-  sleep 0.25
-
-  sleep 0.75
-  ch = treble_ch[4]
-  play ch[0], opts
-  sleep 0.25
-
-  ch = treble_ch[0]
-  play ch[0], opts
-  sleep 0.25
-  play ch[1], opts
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.25/2.0
-  sleep 0.25
-  ch = treble_ch[4]
-  play ch[0]+2, opts
-  sleep 0.25
-
-  sleep 0.75
-  ch = treble_ch[4]
-  play ch[2], opts
-  sleep 0.25
-
-  ch = treble_ch[0]
-  play ch[0], opts
-  sleep 0.25
-  ch = treble_ch[3]
-  play ch[0], opts
-  sleep 0.25/2.0
-  ch = treble_ch[4]
-  play ch[2], opts
-  sleep 0.25/2.0
-  sleep 0.25
-  ch = treble_ch[4]
-  play ch[1], opts
-  sleep 0.25
-end
-
-
-define :next_melody_SCRAPPED_8 do
-  use_synth melody_synth
-  opts = melody_opts
-  # Chord pattern:
-  #
-  # 0  1.5s
-  # 1  2s
-  # 2  0.5s
-  # 0  1s
-  # 1  1.875s
-  # 2  0.125s
-
-  ch = treble_ch[0]
-
-  play ch[0], opts
-  sleep 0.5
-  play ch[0], opts
-  sleep 0.5
-
-  play ch[1], opts
-  sleep 0.25
-  play ch[2], opts
-  sleep 0.25
-  ch = treble_ch[1]
-  play ch[2], opts
-  sleep 0.5
-
-  play ch[0], opts
-  sleep 0.5
-  play ch[1], opts
-  sleep 0.5
-
-  play ch[0], opts
-  sleep 0.25
-  play ch[1], opts
-  sleep 0.25
-  ch = treble_ch[2]
-  play ch[2], opts
-  sleep 0.5
-
-  ch = treble_ch[0]
-
-  play ch[0], opts
-  sleep 0.5
-  play ch[0], opts
-  sleep 0.25
-  play ch[1], opts
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.25/2.0
-
-  ch = treble_ch[1]
-
-  sleep 0.25/2.0
-  play ch[2], opts
-  sleep 0.75/2.0
-  play ch[0], opts
-  sleep 0.5
-
-  play ch[1], opts
-  sleep 0.5
-  sleep 0.25/2.0
-  play ch[0], opts
-  sleep 0.25/2.0
-  play ch[1], opts
-  sleep 0.25/2.0
-  ch = treble_ch[2]
-  play ch[2], opts
-  sleep 0.25/2.0
-
-  sleep 1
 end
 
 
@@ -578,22 +431,32 @@ end
 define :slowdown_chords_8 do
   play treble_ch[0], attack: 0.4, release: 0.2
   sleep 0.5
-  play treble_ch[0], attack: 0.1, release: 4
+  play treble_ch[0], attack: 0.4, release: 0.2
   sleep 0.5
 
+  play treble_ch[0], attack: 0.1, release: 0.2
+  sleep 0.5
+  play treble_ch[0], attack: 0.1, release: 0.2
+  sleep 0.5
+
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+
+  play treble_ch[1], attack: 0.1, release: 0.2
   sleep 1
 
+  play treble_ch[0]
   sleep 1
 
-  play treble_ch[1], attack: 0.1, release: 4
+  play treble_ch[0]
   sleep 1
 
+  play treble_ch[4]
   sleep 1
 
-  sleep 1
-
-  sleep 1
-
+  play treble_ch[4]
   sleep 1
 end
 
@@ -921,59 +784,10 @@ define :bridge_bass_8 do |ch1, ch2, trill_at_end = false|
 end
 
 
-define :next_bass_SCRAPPED_8 do
-  # Chord pattern:
-  #
-  # 0  1.5s
-  # 1  2s
-  # 2  0.5s
-  # 0  1s
-  # 1  1.875s
-  # 2  0.125s
-  use_synth :dsaw
-  opts = { amp: 0.15, note_slide: 0.5 }
-
-  ch = bass_ch[0]
-
-  s = play ch[0], opts.merge(sustain: 2, release: 3)
-  sleep 1
-
-  control s, note: ch[1]
-  sleep 1
-
-  control s, note: ch[2]
-  sleep 1
-
-  ch = bass_ch[1]
-
-  s = play ch[0], opts.merge(sustain: 2, release: 4)
-  sleep 1
-
-  control s, note: ch[1]
-  sleep 1
-
-  control s, note: ch[2]
-  sleep 1
-
-  ch = bass_ch[2]
-
-  control s, note: ch[0]
-  sleep 1
-
-  control s, note: ch[2]
-  sleep 1
-end
-
-
-define :next_bass_8 do
-  # TODO
-end
-
-
-
 
 # Change this to start at a later track
-start_at = 0
+start_at = [0]
+repeat = 1
 
 
 #
@@ -1067,14 +881,16 @@ end
 #
 threads.each do |name, sequence|
   in_thread name: name do
-    sequence[start_at..-1].each do |action|
-      case action
-      when Symbol
-        send(action)
-      when Proc
-        action.call
-      else
-        raise "WTF? Dunno how to do #{action.inspect}"
+    repeat.times do |i|
+      sequence[start_at[i]..-1].each do |action|
+        case action
+        when Symbol
+          send(action)
+        when Proc
+          action.call
+        else
+          raise "WTF? Dunno how to do #{action.inspect}"
+        end
       end
     end
   end
