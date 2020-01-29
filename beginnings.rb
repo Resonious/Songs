@@ -107,6 +107,67 @@ define :fancy_melody_8 do
 end
 
 
+define :fancy_fancy_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[0]
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[0], opts
+  sleep 0.5
+
+  sleep 0.75
+  play ch[0], opts
+  sleep 0.25
+
+  play ch[1], opts
+  sleep 0.25
+  play ch[2], opts
+  sleep 0.5
+  ch = treble_ch[1]
+  play ch[2], opts
+  sleep 0.25
+
+  sleep 1
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[1], opts
+  sleep 0.5
+
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.75
+
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts.merge(release: 0.35)
+  sleep 0.25
+  play ch[2], opts.merge(release: 0.35)
+  sleep 0.25
+  ch = treble_ch[2]
+  play ch[2], opts
+  sleep 0.25
+
+  sleep 1
+end
+
+define :slowdown_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[0]
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[0], opts
+  sleep 0.5
+end
+
+
 define :second_melody_8 do
   use_synth melody_synth
   opts = melody_opts
@@ -189,7 +250,7 @@ define :low_melody_8 do |ch1, ch2|
 end
 
 
-define :next_melody_8 do
+define :shitty_melody_8 do
   use_synth melody_synth
   opts = melody_opts
 
@@ -280,6 +341,124 @@ define :next_melody_8 do
 end
 
 
+define :next_melody_SCRAPPED_8 do
+  use_synth melody_synth
+  opts = melody_opts
+  # Chord pattern:
+  #
+  # 0  1.5s
+  # 1  2s
+  # 2  0.5s
+  # 0  1s
+  # 1  1.875s
+  # 2  0.125s
+
+  ch = treble_ch[0]
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[0], opts
+  sleep 0.5
+
+  play ch[1], opts
+  sleep 0.25
+  play ch[2], opts
+  sleep 0.25
+  ch = treble_ch[1]
+  play ch[2], opts
+  sleep 0.5
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[1], opts
+  sleep 0.5
+
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.25
+  ch = treble_ch[2]
+  play ch[2], opts
+  sleep 0.5
+
+  ch = treble_ch[0]
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[0], opts
+  sleep 0.25
+  play ch[1], opts
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.25/2.0
+
+  ch = treble_ch[1]
+
+  sleep 0.25/2.0
+  play ch[2], opts
+  sleep 0.75/2.0
+  play ch[0], opts
+  sleep 0.5
+
+  play ch[1], opts
+  sleep 0.5
+  sleep 0.25/2.0
+  play ch[0], opts
+  sleep 0.25/2.0
+  play ch[1], opts
+  sleep 0.25/2.0
+  ch = treble_ch[2]
+  play ch[2], opts
+  sleep 0.25/2.0
+
+  sleep 1
+end
+
+
+define :next_melody_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[4]
+
+  s = play ch[0], opts.merge(attack: 0.1, sustain: 2, release: 6, note_slide: 0.5)
+  sleep 1
+
+  ch = treble_ch[0]
+  control s, note: ch[0]
+  sleep 1
+
+  sleep 1
+
+  ch = treble_ch[1]
+  control s, note: ch[0]
+
+  sleep 8-3
+end
+
+
+define :next_melody_p2_8 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[1]
+
+  s = play ch[0], opts.merge(amp: 0.2, attack: 0.1, sustain: 2, release: 4, note_slide: 0.5)
+  sleep 1
+
+  ch = treble_ch[0]
+  control s, note: ch[0]
+  sleep 1
+
+  sleep 1
+
+  ch = treble_ch[1]
+  control s, note: ch[0]
+
+  sleep 8-3
+end
+
+
 define :main_chords_8 do
   3.times do
     play treble_ch[0]
@@ -354,6 +533,68 @@ define :second_chords_p2_4 do
     play treble_ch[2]
     sleep 1
   end
+end
+
+
+define :next_chords_8 do
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+
+  play treble_ch[0], attack: 0.1, release: 0.2
+  sleep 0.5
+  play treble_ch[0], attack: 0.1, release: 0.2
+  sleep 0.5
+
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+
+  play treble_ch[1], attack: 0.1, release: 0.2
+  sleep 1
+
+  play treble_ch[1], attack: 0.4, release: 0.2
+  sleep 0.5
+  play treble_ch[1], attack: 0.4, release: 0.2
+  sleep 0.5
+
+  play treble_ch[1], attack: 0.1, release: 0.2
+  sleep 0.5
+  play treble_ch[1], attack: 0.4, release: 0.2
+  sleep 0.5
+
+  play treble_ch[1], attack: 0.4, release: 0.2
+  sleep 0.5
+  play treble_ch[1], attack: 0.4, release: 0.2
+  sleep 0.5
+
+  play treble_ch[2], attack: 0.1, release: 0.2
+  sleep 1
+end
+
+
+define :slowdown_chords_8 do
+  play treble_ch[0], attack: 0.4, release: 0.2
+  sleep 0.5
+  play treble_ch[0], attack: 0.1, release: 4
+  sleep 0.5
+
+  sleep 1
+
+  sleep 1
+
+  play treble_ch[1], attack: 0.1, release: 4
+  sleep 1
+
+  sleep 1
+
+  sleep 1
+
+  sleep 1
+
+  sleep 1
 end
 
 
@@ -462,6 +703,65 @@ define :bridge2_drums_8 do
     sample :drum_cymbal_closed, amp: 0.6
     sleep 0.25
   end
+end
+
+
+define :next_drums_8 do
+  7.times do
+    sample :drum_snare_hard, amp: 0.2
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.3
+    sleep 0.25
+    sample :drum_snare_hard, amp: 0.2
+    sleep 0.25
+    sample :drum_cymbal_closed, amp: 0.3
+    sleep 0.25
+  end
+
+  sample :drum_snare_hard, amp: 0.2
+  sleep 0.25
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.25
+  sample :drum_snare_hard, amp: 0.2
+  sleep 0.25
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.25/2.0
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.25/2.0
+end
+
+
+define :slowdown_drums_8 do
+  8.times do
+    sample :drum_snare_hard, amp: 0.2
+    sleep 0.5
+    sample :drum_cymbal_closed, amp: 0.3
+    sleep 0.5
+  end
+end
+
+
+define :super_slowdown_drums_8 do
+  sample :drum_snare_hard, amp: 0.2
+  sleep 0.5
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.5
+
+  sleep 1
+
+  sample :drum_snare_hard, amp: 0.2
+  sleep 0.5
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.5
+
+  sleep 1
+
+  sample :drum_snare_hard, amp: 0.2
+  sleep 0.5
+  sample :drum_cymbal_closed, amp: 0.3
+  sleep 0.5
+
+  sleep 3
 end
 
 
@@ -621,8 +921,59 @@ define :bridge_bass_8 do |ch1, ch2, trill_at_end = false|
 end
 
 
+define :next_bass_SCRAPPED_8 do
+  # Chord pattern:
+  #
+  # 0  1.5s
+  # 1  2s
+  # 2  0.5s
+  # 0  1s
+  # 1  1.875s
+  # 2  0.125s
+  use_synth :dsaw
+  opts = { amp: 0.15, note_slide: 0.5 }
+
+  ch = bass_ch[0]
+
+  s = play ch[0], opts.merge(sustain: 2, release: 3)
+  sleep 1
+
+  control s, note: ch[1]
+  sleep 1
+
+  control s, note: ch[2]
+  sleep 1
+
+  ch = bass_ch[1]
+
+  s = play ch[0], opts.merge(sustain: 2, release: 4)
+  sleep 1
+
+  control s, note: ch[1]
+  sleep 1
+
+  control s, note: ch[2]
+  sleep 1
+
+  ch = bass_ch[2]
+
+  control s, note: ch[0]
+  sleep 1
+
+  control s, note: ch[2]
+  sleep 1
+end
+
+
+define :next_bass_8 do
+  # TODO
+end
+
+
+
+
 # Change this to start at a later track
-start_at = 10
+start_at = 0
 
 
 #
@@ -638,12 +989,15 @@ threads = {
     :second_melody_8,
     :second_melody_p2_4,
     :fancy_melody_8,
-    :fancy_melody_8,
+    :fancy_fancy_melody_8,
     -> { low_melody_8(0, 1) },
     -> { low_melody_8(0, 1) },
     -> { low_melody_8(2, 3) },
     -> { low_melody_8(2, 4) },
     :next_melody_8,
+    :next_melody_p2_8,
+    :fancy_fancy_melody_8,
+    :slowdown_melody_8,
   ],
   chords: [
     :main_chords_8,
@@ -656,7 +1010,10 @@ threads = {
     -> { bridge_chords_8(0, 1) },
     -> { bridge_chords_8(2, 3) },
     -> { bridge_chords_8(2, 4) },
-    -> { sleep 8 },
+    :next_chords_8,
+    :next_chords_8,
+    :next_chords_8,
+    :slowdown_chords_8,
   ],
   drums: [
     -> { sleep 8 },
@@ -669,7 +1026,10 @@ threads = {
     :bridge2_drums_8,
     :bridge_drums_8,
     :bridge_drums_8,
-    -> { sleep 8 },
+    :next_drums_8,
+    :next_drums_8,
+    :slowdown_drums_8,
+    :super_slowdown_drums_8,
   ],
   bass: [
     -> { sleep 8 },
@@ -682,6 +1042,9 @@ threads = {
     -> { bridge_bass_8(0, 1) },
     -> { bridge_bass_8(2, 3) },
     -> { bridge_bass_8(2, 4, true) },
+    -> { sleep 8 },
+    -> { sleep 8 },
+    -> { sleep 8 },
     -> { sleep 8 },
   ]
 }
