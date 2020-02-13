@@ -3,20 +3,152 @@
 use_bpm 90
 
 treble_ch = [
-  (chord :c2, :minor),
-  (chord :d2, :minor),
+  (chord :c4, :m7),
+  (chord :d4, :m7),
+]
+
+high_ch = [
+  (chord :c5, :m7),
+  (chord :d5, :m7),
 ]
 
 bass_ch = [
-  (chord :c2, :minor),
-  (chord :d2, :minor),
+  (chord :c2, :m7),
+  (chord :d2, :m7),
 ]
 
-treb_synth = :saw
-treb_opts = { amp: 0.5, release: 0.5 }
+melody_synth = :pretty_bell
+melody_opts = { amp: 1, note_slide: 0.5 }
+
+harmony_synth = :zawa
+harmony_opts = { amp: 0.2, release: 0.2, note_slide: 0.5 }
+
+trebber_synth = :saw
+trebber_opts = { amp: 0.5, release: 0.5 }
 
 bass_synth = :fm
 bass_opts = { amp: 1.1 }
+
+
+define :harmony_1 do
+  use_synth harmony_synth
+  opts = harmony_opts
+
+  ch = high_ch[0]
+
+  4.times { play_pattern_timed ch, 0.25, opts }
+
+  ch = high_ch[1]
+
+  4.times { play_pattern_timed shuffle(ch), 0.25, opts }
+end
+
+
+define :melody_1 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[0]
+
+  play ch[2], opts
+  sleep 1
+
+  play ch[0]-2, opts
+  sleep 0.25
+  play ch[0]-1, opts
+  sleep 0.25
+  play ch[0], opts
+  sleep 0.5
+
+  play ch[1], opts
+  sleep 2
+
+  ch = treble_ch[1]
+
+  play ch[2], opts
+  sleep 1
+
+  play ch[0]-2, opts
+  sleep 0.25
+  play ch[0]-1, opts
+  sleep 0.25
+  play ch[0], opts
+  sleep 0.5
+
+  play ch[1], opts
+  sleep 2
+end
+
+
+define :melody_2 do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[0]
+
+  play ch[2], opts
+  sleep 0.5
+  play ch[0]-2, opts
+  sleep 0.25
+  play ch[0]-1, opts
+  sleep 0.25
+
+  play ch[0], opts
+  sleep 0.5
+  play ch[0]+1, opts
+
+  play ch[1], opts
+  sleep 2
+
+  ch = treble_ch[1]
+
+  play ch[2], opts
+  sleep 1
+
+  play ch[0]-2, opts
+  sleep 0.25
+  play ch[0]-1, opts
+  sleep 0.25
+  play ch[0], opts
+  sleep 0.5
+
+  play ch[1], opts
+  sleep 2
+end
+
+
+define :sway do
+  use_synth melody_synth
+  opts = melody_opts
+
+  ch = treble_ch[0]
+
+  s = play ch[2], opts.merge(sustain: 2, release: 4)
+  sleep 1
+
+  control s, note: ch[0]
+  sleep 1
+
+  control s, note: ch[1]
+  sleep 1
+
+  play ch[0], opts
+  sleep 1
+
+  ch = treble_ch[1]
+
+  s = play ch[2], opts.merge(sustain: 2, release: 4)
+  sleep 1
+
+  control s, note: ch[0]
+  sleep 1
+
+  control s, note: ch[1]
+  sleep 1
+
+  play ch[0], opts
+  sleep 1
+end
 
 
 define :test do
@@ -54,10 +186,10 @@ end
 
 
 define :trebber do
-  use_synth treb_synth
-  opts = treb_opts
+  use_synth trebber_synth
+  opts = trebber_opts
 
-  ch = treble_ch[0]
+  ch = bass_ch[0]
 
   play ch[0], opts.merge(release: 4)
   sleep 0.5
@@ -79,7 +211,7 @@ define :trebber do
   play ch[1], opts
   sleep 0.5
 
-  ch = treble_ch[1]
+  ch = bass_ch[1]
 
   play ch[2], opts.merge(release: 4)
   sleep 0.5
@@ -130,11 +262,17 @@ repeat = 1
 # get super confusing.
 #
 threads = {
+  melody: [
+    :melody_1, :melody_1, :melody_2
+  ],
+  harmony: [
+    :harmony_1, :harmony_1, :harmony_1
+  ],
   whatever: [
-    :test, :test
+    :test, :test, :test
   ],
   percussion: [
-    :drums, :drums
+    :drums, :drums, :drums
   ],
   treb: [
     # -> { sleep 8 },

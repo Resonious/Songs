@@ -2,6 +2,8 @@ Layout/EmptyLines:
   Enabled: false
 Layout/LeadingEmptyLines:
   Enabled: false
+Layout/SpaceAroundOperators:
+  Enabled: false
 
 
 Style/TrailingCommaInArrayLiteral:
