@@ -1,3 +1,18 @@
+fun void percussionPart() {
+    Noise noise => HPF hpf => ADSR env => dac;
+
+    2000 => hpf.freq;
+
+    env.set(1::ms, 10::ms, 0.1, 20::ms);
+
+    while (true) {
+        env.keyOn();
+        100::ms => now;
+        env.keyOff();
+        150::ms => now;
+    }
+}
+
 fun void squarePart() {
     // patch
     SqrOsc sqr => LPF lpf => ADSR env => dac;
@@ -68,4 +83,5 @@ fun void sweepFreq(FilterBasic filter) {
 
 spork ~ mandolinPart();
 spork ~ squarePart();
+spork ~ percussionPart();
 30::second => now;
