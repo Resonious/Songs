@@ -1,13 +1,28 @@
 fun void shakerPart() {
     Shakers sh => dac;
-    // TODO something fun
     // https://chuck.cs.princeton.edu/doc/program/ugen_full.html#Shakers
+
+    3 => sh.preset;
+    13 => sh.objects;
+
+    while (true) {
+        sh.noteOn(1.0);
+        250::ms => now;
+        sh.noteOff(1.0);
+        500::ms => now;
+        <<<"shake">>>;
+    }
 }
 
 fun void percussionPart() {
-    Noise noise => HPF hpf => ADSR env => dac;
+    Noise noise => BPF bpf => ADSR env => dac;
 
-    2000 => hpf.freq;
+    1400 => bpf.freq;
+    400 => bpf.Q;
+
+    50.0 => noise.gain;
+
+    spork ~ sweepFreq(bpf);
 
     env.set(1::ms, 10::ms, 0.1, 20::ms);
 
@@ -28,7 +43,7 @@ fun void squarePart() {
     env.set(100::ms, 500::ms, .8, 1000::ms);
     120::ms => dur T; // Note length
 
-    0.1 => sqr.gain;
+    0.02 => sqr.gain;
 
     // pitches
     [60, 61, 59, 60] @=> int pitches[];
@@ -44,8 +59,6 @@ fun void squarePart() {
         500::ms => now;
         env.keyOff();
         500::ms => now;
-
-        <<<"one iter">>>;
     }
 }
 
@@ -53,6 +66,7 @@ fun void mandolinPart() {
     Mandolin man => LPF lpf => dac;
 
     300.0 => lpf.freq;
+    0.3 => man.gain;
 
     spork ~ sweepFreq(lpf);
 
@@ -90,4 +104,5 @@ fun void sweepFreq(FilterBasic filter) {
 spork ~ mandolinPart();
 spork ~ squarePart();
 spork ~ percussionPart();
+spork ~ shakerPart();
 30::second => now;
