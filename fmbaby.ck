@@ -1,3 +1,9 @@
+fun void shakerPart() {
+    Shakers sh => dac;
+    // TODO something fun
+    // https://chuck.cs.princeton.edu/doc/program/ugen_full.html#Shakers
+}
+
 fun void percussionPart() {
     Noise noise => HPF hpf => ADSR env => dac;
 
