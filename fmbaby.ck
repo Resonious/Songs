@@ -1,4 +1,4 @@
-fun void clipSqr() {
+fun void squarePart() {
     // patch
     SqrOsc sqr => LPF lpf => ADSR env => dac;
 
@@ -67,5 +67,5 @@ fun void sweepFreq(FilterBasic filter) {
 
 
 spork ~ mandolinPart();
-spork ~ clipSqr();
+spork ~ squarePart();
 30::second => now;
