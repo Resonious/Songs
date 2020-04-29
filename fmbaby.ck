@@ -73,14 +73,11 @@ fun void mandolinPart() {
     // Main "song" (plucking)
 
     [36, 38, 39] @=> int scale1[];
-    [40, 44, 48] @=> int scale2[];//not using right now
+    [40, 44, 48] @=> int scale2[];
     0 => int i;
+    scale1 @=> int scale[];
 
     while (true) {
-        scale1 @=> int scale[];
-        /*if (Math.randomf() > 0.5) scale1 @=> scale;
-        else scale2 @=> scale;*/
-
         Math.random2f( 0.2, 0.8 ) => man.pluckPos;
         scale[i] => Std.mtof => man.freq;
 
@@ -88,6 +85,9 @@ fun void mandolinPart() {
 
         0.5::second => now;
         (i+1)%scale.size() => i;
+        if (i == 0)
+            if (Math.randomf() > 0.5) scale1 @=> scale;
+            else scale2 @=> scale;
     }
 }
 
