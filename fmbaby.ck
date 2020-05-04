@@ -1,16 +1,15 @@
 fun void shakerPart() {
-    Shakers sh => dac;
-    // https://chuck.cs.princeton.edu/doc/program/ugen_full.html#Shakers
-
-    3 => sh.preset;
-    13 => sh.objects;
-
     while (true) {
+        Shakers sh => dac;
+        // https://chuck.cs.princeton.edu/doc/program/ugen_full.html#Shakers
+
+        3 => sh.preset;
+        13 => sh.objects;
+
         sh.noteOn(1.0);
         250::ms => now;
-        sh.noteOff(1.0);
+        // sh.noteOff(1.0);
         500::ms => now;
-        <<<"shake">>>;
     }
 }
 
@@ -31,6 +30,30 @@ fun void percussionPart() {
         100::ms => now;
         env.keyOff();
         150::ms => now;
+    }
+}
+
+fun void percussionWaaa() {
+    Noise noise => LPF lpf => ADSR env => dac;
+
+    500 => lpf.freq;
+
+    // 50.0 => noise.gain;
+
+    env.set(1::ms, 10::ms, 0.1, 20::ms);
+
+    while (true) {
+        env.keyOn();
+        25::ms => now;
+        env.keyOff();
+        225::ms => now;
+
+        env.keyOn();
+        25::ms => now;
+        env.keyOff();
+        225::ms => now;
+
+        500::ms => now;
     }
 }
 
@@ -72,8 +95,8 @@ fun void mandolinPart() {
 
     // Main "song" (plucking)
 
-    [36, 38, 39] @=> int scale1[];
-    [40, 44, 48] @=> int scale2[];
+    [36, 37, 35, 36] @=> int scale1[];
+    [36, 37, 35, 36] @=> int scale2[];
     0 => int i;
     scale1 @=> int scale[];
 
@@ -92,6 +115,34 @@ fun void mandolinPart() {
 }
 
 
+fun void mandolinWaaa() {
+    Mandolin man => LPF lpf => dac;
+
+    300.0 => lpf.freq;
+    0.3 => man.gain;
+
+    36 => int baseNote;
+
+    while (true) {
+        Math.random2f( 0.2, 0.8 ) => man.pluckPos;
+
+        baseNote => Std.mtof => man.freq;
+        0.9 => man.pluck;
+
+        // gradually raise pitch over 0.25 seconds
+        now + 0.25::second => time target;
+        while (now < target) {
+            (target - now) / 0.25::second => float progress;
+
+            baseNote => Std.mtof => float freq;
+            freq + (progress * 100.0) => man.freq;
+            1::ms => now;
+        }
+        0.25::second => now;
+    }
+}
+
+
 // Sweeper shred
 fun void sweepFreq(FilterBasic filter) {
     while (true) {
@@ -101,8 +152,10 @@ fun void sweepFreq(FilterBasic filter) {
 }
 
 
-spork ~ mandolinPart();
-spork ~ squarePart();
-spork ~ percussionPart();
-spork ~ shakerPart();
+// spork ~ mandolinPart();
+spork ~ mandolinWaaa();
+// spork ~ squarePart();
+// spork ~ percussionPart();
+spork ~ percussionWaaa();
+// spork ~ shakerPart();
 30::second => now;
