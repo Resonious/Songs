@@ -38,9 +38,9 @@ fun void percussionWaaa() {
 
     500 => lpf.freq;
 
-    // 50.0 => noise.gain;
-
     env.set(1::ms, 10::ms, 0.1, 20::ms);
+
+    0 => int i;
 
     while (true) {
         env.keyOn();
@@ -48,12 +48,18 @@ fun void percussionWaaa() {
         env.keyOff();
         225::ms => now;
 
-        env.keyOn();
-        25::ms => now;
-        env.keyOff();
-        225::ms => now;
+        if (i % 2 == 0) {
+            env.keyOn();
+            25::ms => now;
+            env.keyOff();
+            225::ms => now;
+        }
+        else {
+            250::ms => now;
+        }
 
         500::ms => now;
+        i+1 => i;
     }
 }
 
@@ -142,6 +148,35 @@ fun void mandolinWaaa() {
     }
 }
 
+fun void mandolinWuuu() {
+    Mandolin man => LPF lpf => dac;
+
+    300.0 => lpf.freq;
+    0.3 => man.gain;
+
+    36 => int baseNote;
+
+    while (true) {
+        Math.random2f( 0.2, 0.8 ) => man.pluckPos;
+
+        baseNote => Std.mtof => man.freq;
+        0.9 => man.pluck;
+
+        // gradually raise pitch over 0.25 seconds
+        now + 0.25::second => time target;
+        while (now < target) {
+            0.25::second / (target - now) => float progress;
+
+            baseNote => Std.mtof => float freq;
+            freq + (progress * 100.0) => man.freq;
+            1::ms => now;
+        }
+        0.25::second => now;
+    }
+}
+
+
+
 
 // Sweeper shred
 fun void sweepFreq(FilterBasic filter) {
@@ -154,6 +189,7 @@ fun void sweepFreq(FilterBasic filter) {
 
 // spork ~ mandolinPart();
 spork ~ mandolinWaaa();
+// spork ~ mandolinWuuu();
 // spork ~ squarePart();
 // spork ~ percussionPart();
 spork ~ percussionWaaa();
