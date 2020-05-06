@@ -1,9 +1,106 @@
-// Should be C minor
+// Scales
 [48, 50, 51, 53, 55, 57, 58, 60] @=> int cMinor[];
 
 // Anyone's free to modify and read from this. Should be an
 // array of 3 indices into a scale.
+//
+// Obviously many writers will cause confusing results...
+// But perhaps interesting-sounding.
 [0, 2, 4] @=> int currentChord[];
+
+// Beat events
+Event preBar;
+Event preBeat;
+Event preQuarter;
+Event preHalf;
+
+Event bar;
+Event beat;
+Event quarter;
+Event half;
+
+// Timing
+4 => int bpb; // beats per bar
+110 => int bpm; // beats per minute
+
+// Crap to avoid precision problems
+fun int figureOutSamplesPerBeat(int bpm) {
+    1000000 => int fixedpointPerNormal;
+    <<< "fixedpointPerNormal", fixedpointPerNormal >>>;
+
+    bpm * fixedpointPerNormal => int bpm_fixed;
+    <<< "bpm_fixed", bpm_fixed >>>;
+
+    1::minute/1::samp => float samplesPerMinute_float; // believe it or not...
+    samplesPerMinute_float $ int => int samplesPerMinute;
+    <<< "samplesPerMinute", samplesPerMinute >>>;
+
+    fixedpointPerNormal * samplesPerMinute => int fpTimesSpm;
+    <<< "fpTimesSpm", fpTimesSpm >>>;
+
+    fpTimesSpm / bpm_fixed => int samplesPerBeat;
+    <<< "samplesPerBeat", samplesPerBeat >>>;
+
+    return samplesPerBeat;
+}
+figureOutSamplesPerBeat(bpm)::samp => dur samplesPerBeat;
+
+<<< samplesPerBeat >>>;
+/*
+
+// Shred to fire bar events
+fun void fireBars() {
+    while (true) {
+        1.0 / bpm => float mpb;
+
+        preBar.broadcast();
+        me.yield();
+        bar.broadcast();
+
+        bpb * samplesPerBeat => now;
+    }
+}
+spork ~ fireBars();
+
+// Shred to fire beat events
+fun void fireBeats() {
+    while (true) {
+        preBeat.broadcast();
+        preHalf.broadcast();
+        preQuarter.broadcast();
+        me.yield();
+        beat.broadcast();
+        half.broadcast();
+        quarter.broadcast();
+
+        (samplesPerBeat / 4) => now;
+
+        preQuarter.broadcast();
+        me.yield();
+        quarter.broadcast();
+
+        (samplesPerBeat / 4) => now;
+
+        preHalf.broadcast();
+        preQuarter.broadcast();
+        me.yield();
+        half.broadcast();
+        quarter.broadcast();
+
+        (samplesPerBeat / 4) => now;
+
+        preQuarter.broadcast();
+        me.yield();
+        quarter.broadcast();
+
+        (samplesPerBeat / 4) => now;
+    }
+}
+spork ~ fireBeats();
+
+///////////////////////////////////////////////////////////////
+// Main program!
+///////////////////////////////////////////////////////////////
 
 
 // Sounds a little jarring
@@ -26,18 +123,26 @@ fun void bam() {
     spork ~ bam_play(0);
     spork ~ bam_play(1);
     spork ~ bam_play(2);
-    4000::ms => now;
+    bar => now;
 
+    preBar => now;
+    <<< "Setting chord", now >>>;
     [1, 3, 5] @=> currentChord;
+    bar => now;
+    <<< "Done setting chord", now >>>;
 
     spork ~ bam_play(0);
     spork ~ bam_play(1);
     spork ~ bam_play(2);
-    1600::ms => now;
+    bar => now;
 
+    preBar => now;
+    <<< "Setting chord", now >>>;
     [0, 2, 4] @=> currentChord;
+    bar => now;
+    <<< "Done setting chord", now >>>;
 
-    5000::ms => now;
+    bar => now;
 }
 fun void bam_play(int note) {
     SqrOsc osc => ADSR env => dac; 
@@ -53,7 +158,7 @@ fun void bam_play(int note) {
     5000::ms => now;
 }
 
-fun void swoosh() {
+fun void boopBeep() {
     SinOsc osc => ADSR env => dac;
 
     0.5 => osc.gain;
@@ -71,17 +176,17 @@ fun void swoosh() {
 
     while (true) {
         if (pattern[i] == 10) {
-            500::ms => now;
+            beat => now;
         }
         else {
+            <<< "Playing note", now >>>;
             scale[currentChord[pattern[i]]] + 12 => Std.mtof => osc.freq;
 
             env.keyOn();
             25::ms => now;
             env.keyOff();
-            225::ms => now;
 
-            250::ms => now;
+            beat => now;
         }
 
         (i+1)%pattern.size() => i;
@@ -98,27 +203,31 @@ fun void percussionSimple() {
     0 => int i;
 
     while (true) {
-        env.keyOn();
-        25::ms => now;
-        env.keyOff();
-        225::ms => now;
-
         if (i % 2 == 0) {
             env.keyOn();
             25::ms => now;
             env.keyOff();
-            225::ms => now;
+
+            quarter => now;
+
+            env.keyOn();
+            25::ms => now;
+            env.keyOff();
         }
         else {
-            250::ms => now;
+            env.keyOn();
+            25::ms => now;
+            env.keyOff();
         }
 
-        500::ms => now;
+        beat => now;
+
         i+1 => i;
     }
 }
 
 
+// This is mucked up now. Didn't convert to beat events properly
 fun void percussionComplex() {
     Noise noise => LPF lpf => ADSR env => dac;
 
@@ -130,49 +239,43 @@ fun void percussionComplex() {
         env.keyOn();
         25::ms => now;
         env.keyOff();
-        225::ms => now;
+        half => now;
 
         env.keyOn();
         25::ms => now;
         env.keyOff();
-        225::ms => now;
-
-        500::ms => now;
+        half => now;
 
         env.keyOn();
         25::ms => now;
         env.keyOff();
-        225::ms => now;
+        half => now;
 
-        500::ms => now;
-        250::ms => now;
+        beat => now;
 
         for (0 => int i; i < 4; i++) {
             env.keyOn();
             25::ms => now;
             env.keyOff();
-            ((250.0 / 4.0) - 25)::ms => now;
+            quarter => now;
         }
 
         env.keyOn();
         25::ms => now;
         env.keyOff();
-        225::ms => now;
-
-        250::ms => now;
+        half => now;
 
         env.keyOn();
         25::ms => now;
         env.keyOff();
-        225::ms => now;
+        half => now;
 
         env.keyOn();
         25::ms => now;
         env.keyOff();
-        225::ms => now;
+        half => now;
 
-        250::ms => now;
-        500::ms => now;
+        beat => now;
     }
 }
 
@@ -200,13 +303,14 @@ fun void mandolin() {
             freq + (progress * pitchStart) => man.freq;
             1::ms => now;
         }
-        0.25::second => now;
+        beat => now;
     }
 }
 
-spork ~ mandolin();
-spork ~ percussionComplex();
-spork ~ swoosh();
 spork ~ bam();
+spork ~ mandolin();
+spork ~ percussionSimple();
+spork ~ boopBeep();
 // spork ~ vocal();
 30::second => now;
+*/
