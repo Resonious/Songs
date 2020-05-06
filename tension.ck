@@ -26,14 +26,14 @@ fun void bam() {
     spork ~ bam_play(0);
     spork ~ bam_play(1);
     spork ~ bam_play(2);
-    5000::ms => now;
+    4000::ms => now;
 
     [1, 3, 5] @=> currentChord;
 
     spork ~ bam_play(0);
     spork ~ bam_play(1);
     spork ~ bam_play(2);
-    1000::ms => now;
+    1600::ms => now;
 
     [0, 2, 4] @=> currentChord;
 
@@ -182,12 +182,12 @@ fun void mandolin() {
     300.0 => lpf.freq;
     0.3 => man.gain;
 
-    36 => int targetNote;
     100.0 => float pitchStart;
 
     while (true) {
         Math.random2f( 0.2, 0.8 ) => man.pluckPos;
 
+        cMinor[currentChord[0]] - 12 => int targetNote;
         targetNote => Std.mtof => man.freq;
         0.9 => man.pluck;
 
