@@ -262,6 +262,39 @@ fun void percussionComplex() {
     }
 }
 
+fun void fmFun() {
+    HevyMetl fm => dac;
+
+    0.1 => fm.gain;
+
+    cMinor @=> int scale[];
+
+    // Indexes into the chord! (10 = rest)
+    [2, 1, 0, 1, 
+     0, 2, 1, 0
+    ] @=> int pattern[];
+
+    0 => int i;
+
+
+    while (true) {
+        if (pattern[i] == 10 || Math.randomf() > 0.7) {
+            half => now;
+        }
+        else {
+            scale[currentChord[pattern[i]]] + 12 => Std.mtof => fm.freq;
+
+            fm.noteOn(0.7);
+            200::ms => now;
+            fm.noteOff(0.3);
+
+            half => now;
+        }
+
+        (i+1)%pattern.size() => i;
+    }
+}
+
 fun void mandolin() {
     Mandolin man => LPF lpf => dac;
 
@@ -294,5 +327,6 @@ spork ~ bam();
 spork ~ mandolin();
 spork ~ percussionSimple();
 spork ~ boopBeep();
+spork ~ fmFun();
 // spork ~ vocal();
 30::second => now;
