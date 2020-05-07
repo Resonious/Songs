@@ -108,24 +108,21 @@ fun void bam() {
     bar => now;
     bar => now;
 
-    preBar => now;
-    <<< "Setting chord", now >>>;
-    [1, 3, 5] @=> currentChord;
-    bar => now;
-    <<< "Done setting chord", now >>>;
+    while (true) {
+        if (Math.randomf() < 0.4) { bar => now; continue; }
 
-    spork ~ bam_play(0);
-    spork ~ bam_play(1);
-    spork ~ bam_play(2);
-    bar => now;
+        Math.randomf() => float r;
 
-    preBar => now;
-    <<< "Setting chord", now >>>;
-    [0, 2, 4] @=> currentChord;
-    bar => now;
-    <<< "Done setting chord", now >>>;
+        preBar => now;
+        if (r < 0.33)      { [1, 3, 5] @=> currentChord; }
+        else if (r < 0.66) { [0, 2, 4] @=> currentChord; }
+        else               { [2, 4, 6] @=> currentChord; }
+        bar => now;
 
-    bar => now;
+        spork ~ bam_play(0);
+        spork ~ bam_play(1);
+        spork ~ bam_play(2);
+    }
 }
 fun void bam_play(int note) {
     SqrOsc osc => ADSR env => dac; 
@@ -276,7 +273,6 @@ fun void fmFun() {
 
     0 => int i;
 
-
     while (true) {
         if (pattern[i] == 10 || Math.randomf() > 0.7) {
             half => now;
@@ -329,4 +325,4 @@ spork ~ percussionSimple();
 spork ~ boopBeep();
 spork ~ fmFun();
 // spork ~ vocal();
-30::second => now;
+30::hour => now;
