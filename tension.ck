@@ -21,38 +21,20 @@ Event half;
 
 // Timing
 4 => int bpb; // beats per bar
-110 => int bpm; // beats per minute
+110.0 => float bpm; // beats per minute
 
 // Crap to avoid precision problems
-fun int figureOutSamplesPerBeat(int bpm) {
-    1000000 => int fixedpointPerNormal;
-    <<< "fixedpointPerNormal", fixedpointPerNormal >>>;
+fun int figureOutSamplesPerBeat(float bpm) {
+    1.0 / bpm => float mpb;
+    1::minute/1::samp => float samplesPerMinute; // believe it or not...
 
-    bpm * fixedpointPerNormal => int bpm_fixed;
-    <<< "bpm_fixed", bpm_fixed >>>;
-
-    1::minute/1::samp => float samplesPerMinute_float; // believe it or not...
-    samplesPerMinute_float $ int => int samplesPerMinute;
-    <<< "samplesPerMinute", samplesPerMinute >>>;
-
-    fixedpointPerNormal * samplesPerMinute => int fpTimesSpm;
-    <<< "fpTimesSpm", fpTimesSpm >>>;
-
-    fpTimesSpm / bpm_fixed => int samplesPerBeat;
-    <<< "samplesPerBeat", samplesPerBeat >>>;
-
-    return samplesPerBeat;
+    return Math.floor(mpb * samplesPerMinute) $ int;
 }
 figureOutSamplesPerBeat(bpm)::samp => dur samplesPerBeat;
-
-<<< samplesPerBeat >>>;
-/*
 
 // Shred to fire bar events
 fun void fireBars() {
     while (true) {
-        1.0 / bpm => float mpb;
-
         preBar.broadcast();
         me.yield();
         bar.broadcast();
@@ -123,6 +105,7 @@ fun void bam() {
     spork ~ bam_play(0);
     spork ~ bam_play(1);
     spork ~ bam_play(2);
+    bar => now;
     bar => now;
 
     preBar => now;
@@ -313,4 +296,3 @@ spork ~ percussionSimple();
 spork ~ boopBeep();
 // spork ~ vocal();
 30::second => now;
-*/
