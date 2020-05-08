@@ -261,7 +261,7 @@ fun void percussionComplex() {
 }
 
 fun void fmFun() {
-    HevyMetl fm => dac;
+    Moog fm => dac;
 
     0.1 => fm.gain;
 
@@ -320,10 +320,62 @@ fun void mandolin() {
     }
 }
 
+fun void scratch() {
+    BlowBotl fm => dac;
+
+    0.1 => fm.gain;
+
+    bMinor @=> int scale[];
+
+    // 1 = play, 0 = no play
+    [1, 1, 1, 0, 
+     0, 1, 0, 0
+    ] @=> int pattern[];
+
+    0 => int i;
+
+    while (true) {
+        if (pattern[i] == 1) {
+            scale[currentChord[2]] + 12 => Std.mtof => fm.freq;
+
+            //////////////////////////////////////////////////////
+            // First hit
+            //////////////////////////////////////////////////////
+            fm.noteOn(0.7);
+            100::ms => now;
+            fm.noteOff(0.3);
+            100::ms => now;
+
+            //////////////////////////////////////////////////////
+            // Second, lowering hit
+            //////////////////////////////////////////////////////
+            fm.noteOn(0.7);
+
+            now + 100::ms => time target;
+            scale[currentChord[1]] + 12 => Std.mtof => float startFreq;
+            scale[currentChord[0]] + 12 => Std.mtof => float endFreq;
+
+            while (now < target) {
+                (target - now) / 100::ms => float prog;
+                startFreq + (1.0 - (endFreq * prog)) => fm.freq;
+                1::ms => now;
+            }
+            fm.noteOff(0.3);
+        }
+
+        //////////////////////////////////////////////////////
+        // End of half
+        //////////////////////////////////////////////////////
+        half => now;
+        (i+1)%pattern.size() => i;
+    }
+}
+
 spork ~ bam();
 spork ~ mandolin();
 spork ~ percussionSimple();
 spork ~ boopBeep();
 spork ~ fmFun();
+// spork ~ scratch();
 // spork ~ vocal();
 30::hour => now;
