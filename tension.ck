@@ -1,5 +1,6 @@
 // Scales
 [48, 50, 51, 53, 55, 57, 58, 60] @=> int cMinor[];
+[47, 49, 50, 52, 54, 55, 57, 59] @=> int bMinor[];
 
 // Anyone's free to modify and read from this. Should be an
 // array of 3 indices into a scale.
@@ -128,7 +129,7 @@ fun void bam_play(int note) {
     SqrOsc osc => ADSR env => dac; 
 
     0.005 => osc.gain;
-    cMinor[currentChord[note]] + 12 => Std.mtof => osc.freq;
+    bMinor[currentChord[note]] + 12 => Std.mtof => osc.freq;
     
     env.set(1000::ms, 1000::ms, 0.5, 3000::ms);
 
@@ -143,7 +144,7 @@ fun void boopBeep() {
 
     0.5 => osc.gain;
 
-    cMinor @=> int scale[];
+    bMinor @=> int scale[];
 
     // Indexes into the chord! (10 = rest)
     [0, 1, 0, 2, 
@@ -264,7 +265,7 @@ fun void fmFun() {
 
     0.1 => fm.gain;
 
-    cMinor @=> int scale[];
+    bMinor @=> int scale[];
 
     // Indexes into the chord! (10 = rest)
     [2, 1, 0, 1, 
@@ -302,7 +303,7 @@ fun void mandolin() {
     while (true) {
         Math.random2f( 0.2, 0.8 ) => man.pluckPos;
 
-        cMinor[currentChord[0]] - 12 => int targetNote;
+        bMinor[currentChord[0]] - 12 => int targetNote;
         targetNote => Std.mtof => man.freq;
         0.9 => man.pluck;
 
