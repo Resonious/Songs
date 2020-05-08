@@ -207,6 +207,42 @@ fun void percussionSimple() {
     }
 }
 
+fun void oilDrum() {
+    Noise noise => TwoPole tp => ADSR env => dac;
+
+    1 => tp.norm;
+    0.1 => tp.gain;
+    2400.0 => tp.freq;
+    0.9 => tp.radius;
+
+    env.set(1::ms, 10::ms, 0.5, 200::ms);
+
+    0 => int i;
+
+    while (true) {
+        2400.0 => tp.freq;
+
+        env.keyOn();
+
+        50::ms => dur sweepTime;
+        now + sweepTime => time target;
+        2400.0 => float startFreq;
+        -2000.0 => float offset;
+
+        while (now < target) {
+            1 - ((target - now) / (sweepTime)) => float prog;
+            startFreq + (offset * prog) => tp.freq;
+            1::ms => now;
+        }
+
+        env.keyOff();
+
+        beat => now;
+
+        i+1 => i;
+    }
+}
+
 
 // This is mucked up now. Didn't convert to beat events properly
 fun void percussionComplex() {
@@ -373,9 +409,10 @@ fun void scratch() {
 
 spork ~ bam();
 spork ~ mandolin();
-spork ~ percussionSimple();
-spork ~ boopBeep();
-spork ~ fmFun();
+// spork ~ percussionSimple();
+spork ~ oilDrum();
+// spork ~ boopBeep();
+// spork ~ fmFun();
 // spork ~ scratch();
 // spork ~ vocal();
 30::hour => now;
